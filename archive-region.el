@@ -1,5 +1,5 @@
 ;;;; archive-region.el --- 
-;; Time-stamp: <2010-05-09 10:43:42 rubikitch>
+;; Time-stamp: <2010-05-09 10:47:50 rubikitch>
 
 ;; Copyright (C) 2010  rubikitch
 
@@ -69,7 +69,7 @@
   "archive-region"
   :group 'emacs)
 
-(defvar archive-region-filename-format "%s_archive")
+(defvar archive-region-filename-suffix "_archive")
 (defvar archive-region-date-format "[%Y/%m/%d]")
 
 (defun archive-region (s e)
@@ -146,11 +146,12 @@
 
 (defun archive-region-current-archive-file ()
   (or buffer-file-name (error "Need filename"))
-  (format archive-region-filename-format buffer-file-name))
+  (concat buffer-file-name archive-region-filename-suffix))
 (defun archive-region-current-original-file ()
   (or buffer-file-name (error "Need filename"))
-  ;; DRY
-  (replace-regexp-in-string "_archive" "" buffer-file-name))
+  (replace-regexp-in-string
+   (concat (regexp-quote archive-region-filename-suffix) "$")
+   "" buffer-file-name))
 
 (defun archive-region-open-archive-file-other-window ()
   (interactive)
