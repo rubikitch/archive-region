@@ -1,5 +1,5 @@
 ;;;; archive-region.el --- 
-;; Time-stamp: <2010-05-09 10:08:31 rubikitch>
+;; Time-stamp: <2010-05-09 10:18:41 rubikitch>
 
 ;; Copyright (C) 2010  rubikitch
 
@@ -78,14 +78,50 @@
   (save-restriction
     (narrow-to-region s e)
     (uncomment-region (point-min) (point-max))
-    (goto-char (point-min))
-    (insert (format-time-string archive-region-date-format) "\n")
-    (let ((comment-start (or comment-start "#")))
-      (comment-region (point-min) (point)))
+    (archive-region-add-header)
     (goto-char (point-max))
     (insert "\n")
     (append-to-file (point-min) (point-max) (archive-region-current-archive-file))
     (delete-region (point-min) (point-max))))
+
+(defun archive-region-add-header ()
+  (goto-char (point-min))
+  (insert (format-time-string archive-region-date-format) "\n"
+          (format "%S\n" (archive-region-link-to-original)))
+  (let ((comment-start (or comment-start "#")))
+    (comment-region (point-min) (point))))
+
+(defun archive-region-link-to-original ()
+  (list 'archive-region-pos
+        (save-excursion
+          ;; find previous nonempty line
+          (while (progn (forward-line -1)
+                        (eq (point-at-bol) (point-at-eol))))
+          (buffer-substring-no-properties (point-at-bol) (point-at-eol))))
+  )
+
+;;;; unit test
+;; (install-elisp "http://www.emacswiki.org/cgi-bin/wiki/download/el-expectations.el")
+;; (install-elisp "http://www.emacswiki.org/cgi-bin/wiki/download/el-mock.el")
+(dont-compile
+  (when (fboundp 'expectations)
+    (expectations
+      (desc "archive-region-link-to-original")
+      (expect '(archive-region-pos "previous-line")
+        (with-temp-buffer
+          (insert "previous-line\ncurrent-line")
+          (archive-region-link-to-original)))
+      (expect '(archive-region-pos "previous-nonempty-line")
+        (with-temp-buffer
+          (insert "previous-nonempty-line\n\ncurrent-line")
+          (archive-region-link-to-original)))
+      (expect '(archive-region-pos "previous-nonempty-line")
+        (with-temp-buffer
+          (insert "previous-nonempty-line\n\n\ncurrent-line")
+          (archive-region-link-to-original)))
+      )))
+
+
 
 (defun archive-region-current-archive-file ()
   (or buffer-file-name (error "Need filename"))
