@@ -1,5 +1,5 @@
-;;;; archive-region.el --- 
-;; Time-stamp: <2010-05-09 10:47:50 rubikitch>
+;;;; archive-region.el --- Move region to archive file instead of killing
+;; Time-stamp: <2010-05-09 10:59:40 rubikitch>
 
 ;; Copyright (C) 2010  rubikitch
 
@@ -24,12 +24,21 @@
 
 ;;; Commentary:
 ;;
-;; 
+;; Extend C-w to have archive feature.
+;; C-u C-w moves region to the archive file.
+;; C-u C-u C-w opens the archive file.
+;; The archive files have suffix "_archive" after original filename.
 
 ;;; Commands:
 ;;
 ;; Below are complete command list:
 ;;
+;;  `archive-region'
+;;    Move the region to archive file.
+;;  `archive-region-open-archive-file-other-window'
+;;    Open archive file.
+;;  `kill-region-or-archive-region'
+;;    Extend `kill-region' (C-w) to have archive feature.
 ;;
 ;;; Customizable Options:
 ;;
@@ -73,6 +82,7 @@
 (defvar archive-region-date-format "[%Y/%m/%d]")
 
 (defun archive-region (s e)
+  "Move the region to archive file."
   (interactive "r")
   (or buffer-file-name (error "Need filename"))
   (save-restriction
@@ -154,10 +164,23 @@
    "" buffer-file-name))
 
 (defun archive-region-open-archive-file-other-window ()
+  "Open archive file."
   (interactive)
   (unless (file-exists-p (archive-region-current-archive-file))
     (error "Archive file does not exist."))
   (find-file-other-window (archive-region-current-archive-file)))
+
+(defun kill-region-or-archive-region (arg s e)
+  "Extend `kill-region' (C-w) to have archive feature.
+C-w: `kill-region' (normal C-w)
+C-u C-w: `archive-region' (move text to archive file) / also in kill-ring
+C-u C-u C-w: `archive-region-open-archive-file-other-window' (open archive file)"
+  (interactive "p\nr")
+  (case arg
+    (1  (kill-region s e))
+    (4  (kill-new (buffer-substring s e)) (archive-region s e))
+    (16 (archive-region-open-archive-file-other-window))))
+(substitute-key-definition 'kill-region 'kill-region-or-archive-region global-map)
 
 (provide 'archive-region)
 
