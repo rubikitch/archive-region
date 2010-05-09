@@ -1,5 +1,5 @@
 ;;;; archive-region.el --- 
-;; $Id: archive-region.el,v 1.2 2010-05-09 01:02:13 rubikitch Exp $
+;; Time-stamp: <2010-05-09 10:07:00 rubikitch>
 
 ;; Copyright (C) 2010  rubikitch
 
@@ -59,17 +59,10 @@
 
 ;;; History:
 
-;; $Log: archive-region.el,v $
-;; Revision 1.2  2010-05-09 01:02:13  rubikitch
-;; new command: `archive-region-open-archive-file-other-window' / refactoring
-;;
-;; Revision 1.1  2010/04/09 12:51:53  rubikitch
-;; Initial revision
-;;
+;; See http://www.rubyist.net/~rubikitch/gitlog/archive-region.txt
 
 ;;; Code:
 
-(defvar archive-region-version "$Id: archive-region.el,v 1.2 2010-05-09 01:02:13 rubikitch Exp $")
 (eval-when-compile (require 'cl))
 (require 'newcomment)
 (defgroup archive-region nil
@@ -109,5 +102,5 @@
 (provide 'archive-region)
 
 ;; How to save (DO NOT REMOVE!!)
-;; (emacswiki-post "archive-region.el")
+;; (progn (git-log-upload) (emacswiki-post "archive-region.el"))
 ;;; archive-region.el ends here
