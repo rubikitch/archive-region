@@ -1,5 +1,5 @@
 ;;;; archive-region.el --- 
-;; Time-stamp: <2010-05-09 10:07:00 rubikitch>
+;; Time-stamp: <2010-05-09 10:08:31 rubikitch>
 
 ;; Copyright (C) 2010  rubikitch
 
@@ -74,23 +74,21 @@
 
 (defun archive-region (s e)
   (interactive "r")
-  (if buffer-file-name
-      (save-restriction
-        (narrow-to-region s e)
-        (uncomment-region (point-min) (point-max))
-        (goto-char (point-min))
-        (insert (format-time-string archive-region-date-format) "\n")
-        (let ((comment-start (or comment-start "#")))
-          (comment-region (point-min) (point)))
-        (goto-char (point-max))
-        (insert "\n")
-        (append-to-file (point-min) (point-max) (archive-region-current-archive-file))
-        (delete-region (point-min) (point-max)))
-    (error "Need filename")))
+  (or buffer-file-name (error "Need filename"))
+  (save-restriction
+    (narrow-to-region s e)
+    (uncomment-region (point-min) (point-max))
+    (goto-char (point-min))
+    (insert (format-time-string archive-region-date-format) "\n")
+    (let ((comment-start (or comment-start "#")))
+      (comment-region (point-min) (point)))
+    (goto-char (point-max))
+    (insert "\n")
+    (append-to-file (point-min) (point-max) (archive-region-current-archive-file))
+    (delete-region (point-min) (point-max))))
 
 (defun archive-region-current-archive-file ()
-  (unless buffer-file-name
-    (error "Need filename"))
+  (or buffer-file-name (error "Need filename"))
   (format archive-region-filename-format buffer-file-name))
 
 (defun archive-region-open-archive-file-other-window ()
