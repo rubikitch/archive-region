@@ -1,5 +1,5 @@
 ;;;; archive-region.el --- 
-;; Time-stamp: <2010-05-09 10:19:21 rubikitch>
+;; Time-stamp: <2010-05-09 10:43:42 rubikitch>
 
 ;; Copyright (C) 2010  rubikitch
 
@@ -94,10 +94,23 @@
 (defun archive-region-link-to-original ()
   (list 'archive-region-pos
         (save-excursion
-          ;; find previous nonempty line
-          (while (progn (forward-line -1)
-                        (eq (point-at-bol) (point-at-eol))))
-          (buffer-substring-no-properties (point-at-bol) (point-at-eol)))))
+          (save-restriction
+            (widen)
+            (if (= (line-number-at-pos) 1)
+                nil
+              ;; find previous nonempty line
+              (while (progn (forward-line -1)
+                            (eq (point-at-bol) (point-at-eol))))
+              (buffer-substring-no-properties (point-at-bol) (point-at-eol)))))))
+
+(defun archive-region-pos (line)
+  (find-file-other-window (archive-region-current-original-file))
+  (save-restriction
+    (widen)
+    (goto-char (point-min))
+    (and line
+         (search-forward (concat "\n" line "\n") nil t)
+         (forward-line -1))))
 
 ;;;; unit test
 ;; (install-elisp "http://www.emacswiki.org/cgi-bin/wiki/download/el-expectations.el")
@@ -118,6 +131,15 @@
         (with-temp-buffer
           (insert "previous-nonempty-line\n\n\ncurrent-line")
           (archive-region-link-to-original)))
+      (expect '(archive-region-pos nil)
+        (with-temp-buffer
+          (insert "first-line")
+          (archive-region-link-to-original)))
+      (expect '(archive-region-pos "out-of-narrowing")
+        (with-temp-buffer
+          (insert "out-of-narrowing\ncurrent-line")
+          (narrow-to-region (point-at-bol) (point-at-eol))
+          (archive-region-link-to-original)))
       )))
 
 
@@ -125,6 +147,10 @@
 (defun archive-region-current-archive-file ()
   (or buffer-file-name (error "Need filename"))
   (format archive-region-filename-format buffer-file-name))
+(defun archive-region-current-original-file ()
+  (or buffer-file-name (error "Need filename"))
+  ;; DRY
+  (replace-regexp-in-string "_archive" "" buffer-file-name))
 
 (defun archive-region-open-archive-file-other-window ()
   (interactive)
