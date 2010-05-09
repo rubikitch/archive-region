@@ -1,5 +1,5 @@
 ;;;; archive-region.el --- 
-;; Time-stamp: <2010-05-09 10:18:41 rubikitch>
+;; Time-stamp: <2010-05-09 10:19:21 rubikitch>
 
 ;; Copyright (C) 2010  rubikitch
 
@@ -97,8 +97,7 @@
           ;; find previous nonempty line
           (while (progn (forward-line -1)
                         (eq (point-at-bol) (point-at-eol))))
-          (buffer-substring-no-properties (point-at-bol) (point-at-eol))))
-  )
+          (buffer-substring-no-properties (point-at-bol) (point-at-eol)))))
 
 ;;;; unit test
 ;; (install-elisp "http://www.emacswiki.org/cgi-bin/wiki/download/el-expectations.el")
