@@ -1,5 +1,5 @@
 ;;;; archive-region.el --- 
-;; $Id: archive-region.el,v 1.1 2010-04-09 12:51:53 rubikitch Exp $
+;; $Id: archive-region.el,v 1.2 2010-05-09 01:02:13 rubikitch Exp $
 
 ;; Copyright (C) 2010  rubikitch
 
@@ -60,13 +60,16 @@
 ;;; History:
 
 ;; $Log: archive-region.el,v $
-;; Revision 1.1  2010-04-09 12:51:53  rubikitch
+;; Revision 1.2  2010-05-09 01:02:13  rubikitch
+;; new command: `archive-region-open-archive-file-other-window' / refactoring
+;;
+;; Revision 1.1  2010/04/09 12:51:53  rubikitch
 ;; Initial revision
 ;;
 
 ;;; Code:
 
-(defvar archive-region-version "$Id: archive-region.el,v 1.1 2010-04-09 12:51:53 rubikitch Exp $")
+(defvar archive-region-version "$Id: archive-region.el,v 1.2 2010-05-09 01:02:13 rubikitch Exp $")
 (eval-when-compile (require 'cl))
 (require 'newcomment)
 (defgroup archive-region nil
@@ -88,10 +91,20 @@
           (comment-region (point-min) (point)))
         (goto-char (point-max))
         (insert "\n")
-        (append-to-file (point-min) (point-max)
-                        (format archive-region-filename-format buffer-file-name))
+        (append-to-file (point-min) (point-max) (archive-region-current-archive-file))
         (delete-region (point-min) (point-max)))
     (error "Need filename")))
+
+(defun archive-region-current-archive-file ()
+  (unless buffer-file-name
+    (error "Need filename"))
+  (format archive-region-filename-format buffer-file-name))
+
+(defun archive-region-open-archive-file-other-window ()
+  (interactive)
+  (unless (file-exists-p (archive-region-current-archive-file))
+    (error "Archive file does not exist."))
+  (find-file-other-window (archive-region-current-archive-file)))
 
 (provide 'archive-region)
 
