@@ -1,8 +1,8 @@
 ;;; archive-region.el --- Move region to archive file instead of killing
 
-;; Time-stamp: <2014-02-02 08:41:13 rubikitch>
+;; Time-stamp: <2014-02-02 08:42:06 rubikitch>
 
-;; Copyright (C) 2010,2013  rubikitch
+;; Copyright (C) 2010,2013,2014  rubikitch
 
 ;; Author: rubikitch <rubikitch@ruby-lang.org>
 ;; Keywords: languages
