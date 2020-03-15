@@ -122,35 +122,6 @@
          (search-forward (concat "\n" line "\n") nil t)
          (forward-line -1))))
 
-;;;; unit test
-;; (install-elisp "http://www.emacswiki.org/cgi-bin/wiki/download/el-expectations.el")
-;; (install-elisp "http://www.emacswiki.org/cgi-bin/wiki/download/el-mock.el")
-(dont-compile
-  (when (fboundp 'expectations)
-    (expectations
-     (desc "archive-region-link-to-original")
-     (expect '(archive-region-pos "previous-line")
-             (with-temp-buffer
-               (insert "previous-line\ncurrent-line")
-               (archive-region-link-to-original)))
-     (expect '(archive-region-pos "previous-nonempty-line")
-             (with-temp-buffer
-               (insert "previous-nonempty-line\n\ncurrent-line")
-               (archive-region-link-to-original)))
-     (expect '(archive-region-pos "previous-nonempty-line")
-             (with-temp-buffer
-               (insert "previous-nonempty-line\n\n\ncurrent-line")
-               (archive-region-link-to-original)))
-     (expect '(archive-region-pos nil)
-             (with-temp-buffer
-               (insert "first-line")
-               (archive-region-link-to-original)))
-     (expect '(archive-region-pos "out-of-narrowing")
-             (with-temp-buffer
-               (insert "out-of-narrowing\ncurrent-line")
-               (narrow-to-region (point-at-bol) (point-at-eol))
-               (archive-region-link-to-original))))))
-
 (defun archive-region-current-archive-file ()
   (or buffer-file-name (error "Need filename"))
   (concat buffer-file-name archive-region-filename-suffix))
