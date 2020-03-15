@@ -129,31 +129,28 @@
 (dont-compile
   (when (fboundp 'expectations)
     (expectations
-      (desc "archive-region-link-to-original")
-      (expect '(archive-region-pos "previous-line")
-        (with-temp-buffer
-          (insert "previous-line\ncurrent-line")
-          (archive-region-link-to-original)))
-      (expect '(archive-region-pos "previous-nonempty-line")
-        (with-temp-buffer
-          (insert "previous-nonempty-line\n\ncurrent-line")
-          (archive-region-link-to-original)))
-      (expect '(archive-region-pos "previous-nonempty-line")
-        (with-temp-buffer
-          (insert "previous-nonempty-line\n\n\ncurrent-line")
-          (archive-region-link-to-original)))
-      (expect '(archive-region-pos nil)
-        (with-temp-buffer
-          (insert "first-line")
-          (archive-region-link-to-original)))
-      (expect '(archive-region-pos "out-of-narrowing")
-        (with-temp-buffer
-          (insert "out-of-narrowing\ncurrent-line")
-          (narrow-to-region (point-at-bol) (point-at-eol))
-          (archive-region-link-to-original)))
-      )))
-
-
+     (desc "archive-region-link-to-original")
+     (expect '(archive-region-pos "previous-line")
+             (with-temp-buffer
+               (insert "previous-line\ncurrent-line")
+               (archive-region-link-to-original)))
+     (expect '(archive-region-pos "previous-nonempty-line")
+             (with-temp-buffer
+               (insert "previous-nonempty-line\n\ncurrent-line")
+               (archive-region-link-to-original)))
+     (expect '(archive-region-pos "previous-nonempty-line")
+             (with-temp-buffer
+               (insert "previous-nonempty-line\n\n\ncurrent-line")
+               (archive-region-link-to-original)))
+     (expect '(archive-region-pos nil)
+             (with-temp-buffer
+               (insert "first-line")
+               (archive-region-link-to-original)))
+     (expect '(archive-region-pos "out-of-narrowing")
+             (with-temp-buffer
+               (insert "out-of-narrowing\ncurrent-line")
+               (narrow-to-region (point-at-bol) (point-at-eol))
+               (archive-region-link-to-original))))))
 
 (defun archive-region-current-archive-file ()
   (or buffer-file-name (error "Need filename"))
