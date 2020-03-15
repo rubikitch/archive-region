@@ -1,75 +1,74 @@
 ;;; archive-region.el --- Move region to archive file instead of killing
 
-;; Time-stamp: <2014-02-02 08:42:06 rubikitch>
-
 ;; Copyright (C) 2010,2013,2014  rubikitch
 
 ;; Author: rubikitch <rubikitch@ruby-lang.org>
-;; Keywords: languages
+;; Maintainer: rubikitch <rubikitch@ruby-lang.org>
 ;; URL: http://www.emacswiki.org/cgi-bin/wiki/download/archive-region.el
+;; Keywords: languages
+;; Version: 0.1
+;; URL: https://github.com/rubikitch/archive-region
+;; Package-Requires: ((emacs "24.4"))
 
-;; This file is free software; you can redistribute it and/or modify
+;;; This file is NOT part of GNU Emacs
+
+;; This program is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
-;; the Free Software Foundation; either version 2, or (at your option)
-;; any later version.
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
 
-;; This file is distributed in the hope that it will be useful,
+;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.  If not, write to
-;; the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-;; Boston, MA 02110-1301, USA.
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
-;;
+
 ;; Extend C-w to have archive feature.
 ;; C-u C-w moves region to the archive file.
 ;; C-u C-u C-w opens the archive file.
 ;; The archive files have suffix "_archive" after original filename.
 
+
 ;;; Commands:
-;;
+
 ;; Below are complete command list:
-;;
+
 ;;  `archive-region'
 ;;    Move the region to archive file.
 ;;  `archive-region-open-archive-file-other-window'
 ;;    Open archive file.
 ;;  `kill-region-or-archive-region'
 ;;    Extend `kill-region' (C-w) to have archive feature.
-;;
+
+
 ;;; Customizable Options:
-;;
+
 ;; Below are customizable option list:
-;;
+
 
 ;;; Installation:
-;;
+
 ;; Put archive-region.el to your load-path.
 ;; The load-path is usually ~/elisp/.
 ;; It's set in your ~/.emacs like this:
 ;; (add-to-list 'load-path (expand-file-name "~/elisp"))
-;;
+
 ;; And the following to your ~/.emacs startup file.
-;;
-;; (require 'archive-region)
-;;
+
+;;   (require 'archive-region)
+
 ;; No need more.
 
+
 ;;; Customize:
-;;
-;;
+
 ;; All of the above can customize by:
 ;;      M-x customize-group RET archive-region RET
-;;
 
-
-;;; History:
-
-;; See http://www.rubyist.net/~rubikitch/gitlog/archive-region.txt
 
 ;;; Code:
 
