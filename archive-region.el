@@ -72,7 +72,7 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'cl))
+(require 'cl-lib)
 (require 'newcomment)
 
 (defgroup archive-region nil
@@ -151,7 +151,7 @@ C-w: `kill-region' (normal C-w)
 C-u C-w: `archive-region' (move text to archive file) / also in kill-ring
 C-u C-u C-w: `archive-region-open-archive-file-other-window' (open archive file)"
   (interactive "p\nr")
-  (case arg
+  (cl-case arg
     (1  (if (and (boundp 'cua--rectangle) cua--rectangle)
             (cua-cut-rectangle nil)
           (kill-region s e)))
