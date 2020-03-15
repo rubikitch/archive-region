@@ -74,6 +74,7 @@
 
 (eval-when-compile (require 'cl))
 (require 'newcomment)
+
 (defgroup archive-region nil
   "archive-region"
   :group 'languages)
@@ -125,6 +126,7 @@
 (defun archive-region-current-archive-file ()
   (or buffer-file-name (error "Need filename"))
   (concat buffer-file-name archive-region-filename-suffix))
+
 (defun archive-region-current-original-file ()
   (or buffer-file-name (error "Need filename"))
   (replace-regexp-in-string
@@ -137,6 +139,7 @@
   (unless (file-exists-p (archive-region-current-archive-file))
     (error "Archive file does not exist."))
   (funcall (or func 'find-file) (archive-region-current-archive-file)))
+
 (defun archive-region-open-archive-file-other-window ()
   "Open archive file."
   (interactive)
@@ -154,6 +157,7 @@ C-u C-u C-w: `archive-region-open-archive-file-other-window' (open archive file)
           (kill-region s e)))
     (4  (kill-new (buffer-substring s e)) (archive-region s e))
     (16 (archive-region-open-archive-file-other-window))))
+
 (substitute-key-definition 'kill-region 'kill-region-or-archive-region global-map)
 
 (provide 'archive-region)
