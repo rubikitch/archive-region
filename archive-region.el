@@ -158,6 +158,4 @@ C-u C-u C-w: `archive-region-open-archive-file-other-window' (open archive file)
 
 (provide 'archive-region)
 
-;; How to save (DO NOT REMOVE!!)
-;; (progn (git-log-upload) (emacswiki-post "archive-region.el"))
 ;;; archive-region.el ends here
