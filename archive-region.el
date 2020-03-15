@@ -158,4 +158,8 @@ C-u C-u C-w: `archive-region-open-archive-file-other-window' (open archive file)
 
 (provide 'archive-region)
 
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; End:
+
 ;;; archive-region.el ends here
