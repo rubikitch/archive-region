@@ -76,7 +76,7 @@
 (require 'newcomment)
 (defgroup archive-region nil
   "archive-region"
-  :group 'emacs)
+  :group 'languages)
 
 (defvar archive-region-filename-suffix "_archive")
 (defvar archive-region-date-format "[%Y/%m/%d]")
