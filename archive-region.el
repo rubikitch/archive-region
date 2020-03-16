@@ -67,7 +67,7 @@
 ;;; Customize:
 
 ;; All of the above can customize by:
-;;      M-x customize-group RET archive-region RET
+;;   M-x customize-group RET archive-region RET
 
 
 ;;; Code:
